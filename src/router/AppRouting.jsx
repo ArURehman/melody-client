@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Layout from '../components/Layout';
 import Home from '../pages/Home';
 import routeNames from './RouteNames';
 
@@ -6,7 +7,9 @@ const AppRouting = () => {
   return (
     <BrowserRouter>
         <Routes>
-            <Route path={routeNames.HOME} element={<Home />} />
+            <Route element={<Layout />}> 
+                <Route path={routeNames.HOME} element={<Home />} /> 
+            </Route>
         </Routes>
     </BrowserRouter>
   )
