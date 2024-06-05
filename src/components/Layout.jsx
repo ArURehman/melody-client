@@ -3,13 +3,11 @@ import Sidebar from '../components/global/Sidebar'
 
 const Layout = () => {
   return (
-    <div className="grid grid-flow-col grid-cols-6 h-screen overflow-auto">
-        <div className="col-span-1">
+    <div className="flex flex-row h-screen overflow-auto">
+        <div className="basis-1/6">
             <Sidebar />
         </div>
-        <div className="col-span-5">
-            <Outlet />
-        </div>
+        <Outlet />
     </div>
   )
 }
