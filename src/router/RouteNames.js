@@ -1,9 +1,8 @@
-import { BiSearch } from "react-icons/bi";
-import { FaHome } from "react-icons/fa";
+import { BiSearch, BiSolidHome } from "react-icons/bi";
 
 const routeNames = {
     HOME: {
-        icon: FaHome,
+        icon: BiSolidHome,
         name: "Home",
         path: "/",
     },

@@ -8,7 +8,7 @@ const AppRouting = () => {
     <BrowserRouter>
         <Routes>
             <Route element={<Layout />}> 
-                <Route path={routeNames.HOME} element={<Home />} /> 
+                <Route path={routeNames.HOME.path} element={<Home />} /> 
             </Route>
         </Routes>
     </BrowserRouter>
