@@ -1,14 +1,16 @@
 import Modal from "../global/Modal"
+import GoogleSignInBtn from "../buttons/GoogleSignInBtn"
 
 const AuthModal = () => {
+
   return (
     <Modal
         title={'Welcome Back'}
-        description={'Please login to continue'}
+        description={'Login to your account'}
         isOpen={true}
         onChange={() => {}}
     >
-        Auth Modal
+        <GoogleSignInBtn />
     </Modal>
   )
 }
