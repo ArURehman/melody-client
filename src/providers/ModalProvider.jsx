@@ -1,16 +1,9 @@
-import Modal from '../components/global/Modal'
+import AuthModal from "../components/modals/AuthModal"
 
 const ModalProvider = () => {
   return (
     <>
-    <Modal 
-        title={'Modal Title'}
-        description={'Modal Description'}
-        isOpen={true}
-        onChange={() => {}}
-    >
-        Modal Content
-    </Modal>
+    <AuthModal />
     </>
   )
 }

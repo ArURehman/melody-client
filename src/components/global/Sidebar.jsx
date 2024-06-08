@@ -1,7 +1,7 @@
 import Box from "./Box"
 import routeNames from '../../router/RouteNames'
-import SidebarItem from "../Sidebar/SidebarItem"
-import Library from "../Sidebar/Library"
+import Library from "../sidebar/Library"
+import SidebarItem from '../sidebar/SidebarItem'
 
 const Sidebar = () => {
   return (
