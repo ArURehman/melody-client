@@ -22,33 +22,43 @@ const Login = ({ setShowLogin }) => {
         );
         return;
     }
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        const token = user.accessToken;
-        localStorage.setItem('token', token);
-        toast.success(
-            `Welcome ${user.displayName}!`,
-            {
-                duration: 4000,
-                position: 'bottom-right',
-                className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
-            }
-        );
-      })
-      .catch((error) => {
-        toast.error(
-            error.message.replace('Firebase: ', ''),
-            {
-                duration: 4000,
-                position: 'bottom-right',
-                className: 'bg-red-500 text-white font-sans font-semibold border border-red-600 rounded-md p-2 shadow-lg',
-            }
-        );
-      });
+    const loading = toast.loading('Logging in...', {
+        duration: 0,
+        position: 'bottom-right',
+        className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
+    });
+    toast.promise(
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            toast.dismiss(loading);
+            const user = userCredential.user;
+            const token = user.accessToken;
+            localStorage.setItem('token', token);
+            toast.success(
+                `Welcome back ${user.displayName}!`,
+                {
+                    duration: 4000,
+                    position: 'bottom-right',
+                    className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
+                }
+            );
+        })
+        .catch((error) => {
+            toast.dismiss(loading);
+            toast.error(
+                error.message.replace('Firebase: ', ''),
+                {
+                    duration: 4000,
+                    position: 'bottom-right',
+                    className: 'bg-red-500 text-white font-sans font-semibold border border-red-600 rounded-md p-2 shadow-lg',
+                }
+            );
+        })
+    );
   }
 
   return (
+    <>
     <form>
         <div className="mb-4">
             <Input label="email" text="Email" type="email" placeholder="Email" state={email} setState={setEmail}/>
@@ -65,15 +75,16 @@ const Login = ({ setShowLogin }) => {
             Login
             </button>
         </div>
-        <div className="text-center mt-4">
-            <button
-            className="inline-block align-baseline font-bold text-sm text-primary-500 hover:text-primary-800 hover:opacity-75 transition"
-            onClick={() => setShowLogin(false)}
-            >
-            {`Don't have an account? Sign Up`}
-            </button>
-        </div>
     </form>
+    <div className="text-center mt-4">
+        <button
+        className="inline-block align-baseline font-bold text-sm text-primary-500 hover:text-primary-800 hover:opacity-75 transition"
+        onClick={() => setShowLogin(false)}
+        >
+        {`Don't have an account? Sign Up`}
+        </button>
+    </div>
+    </>
   )
 }
 

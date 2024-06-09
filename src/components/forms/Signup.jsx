@@ -1,7 +1,7 @@
 import Input from "../global/Input"
 import { useState } from "react"
-import { auth } from "../../config/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../config/firebaseConfig";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import toast from "react-hot-toast";
 
 const Signup = ({ setShowLogin }) => {
@@ -23,9 +23,24 @@ const Signup = ({ setShowLogin }) => {
         );
         return;
     }
+    const loading = toast.loading('Logging in...', {
+        duration: 0,
+        position: 'bottom-right',
+        className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
+    });
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        toast.dismiss(loading);
+        updateProfile(auth.currentUser, {
+            displayName: username,
+        });
         const user = userCredential.user;
+        db.collection('users').doc(user.uid).set({
+            username: username,
+            email: email,
+            liked_songs: [],
+            createdAt: new Date(),
+        });
         const token = user.accessToken;
         localStorage.setItem('token', token);
         toast.success(
@@ -38,6 +53,7 @@ const Signup = ({ setShowLogin }) => {
         );
       })
       .catch((error) => {
+        toast.dismiss(loading);
         toast.error(
             error.message.replace('Firebase: ', ''),
             {
@@ -50,6 +66,7 @@ const Signup = ({ setShowLogin }) => {
   }
 
   return (
+    <>
     <form>
         <div className="mb-4">
             <Input label="username" text="Username" type="text" placeholder="Username" state={username} setState={setUsername}/>
@@ -69,15 +86,16 @@ const Signup = ({ setShowLogin }) => {
             Sign Up
             </button>
         </div>
-        <div className="text-center mt-4">
-            <button
-            className="inline-block align-baseline font-bold text-sm text-primary-500 hover:text-primary-800 hover:opacity-75 transition"
-            onClick={() => setShowLogin(true)}
-            >
-            {`Already have an account? Login`}
-            </button>
-        </div>
     </form>
+    <div className="text-center mt-4">
+        <button
+        className="inline-block align-baseline font-bold text-sm text-primary-500 hover:text-primary-800 hover:opacity-75 transition"
+        onClick={() => setShowLogin(true)}
+        >
+        {`Already have an account? Login`}
+        </button>
+    </div>
+    </>
   )
 }
 
