@@ -1,16 +1,27 @@
 import Modal from "../global/Modal"
 import GoogleSignInBtn from "../buttons/GoogleSignInBtn"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Login from '../forms/Login'
 import Signup from '../forms/Signup'
 import useAuthStateChange from "../../hooks/useAuthStateChange"
 import useAuthModal from '../../hooks/useAuthModal'
+import useUserContext from '../../hooks/useUserContext'
 
 const AuthModal = () => {
+
   const [showLogin, setShowLogin] = useState(true);
   const {isOpen, close} = useAuthModal();
+  const { user } = useUserContext();
+  
   // Change the following line if causing an error
   useAuthStateChange();
+
+  useEffect(() => {
+    if (user !== null && isOpen) {
+      window.location.reload();
+      close();
+    }
+  }, [user, isOpen, close])
 
   const handleOpen = (curOpen) => {
     if(!curOpen) {
