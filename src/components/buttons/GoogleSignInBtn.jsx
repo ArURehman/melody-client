@@ -1,6 +1,6 @@
 import { Button } from "@mui/material"
 import { FcGoogle } from "react-icons/fc";
-import { auth } from "../../config/firebaseConfig";
+import { auth, db } from "../../config/firebaseConfig";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import toast from "react-hot-toast";
 
@@ -14,6 +14,12 @@ const GoogleSignInBtn = () => {
         const token = credential.accessToken;
         localStorage.setItem('token', token);
         const user = result.user;
+        db.collection('users').doc(user.uid).set({
+            username: user.displayName,
+            email: user.email,
+            liked_songs: [],
+            createdAt: new Date(),
+        });
         toast.success(
             `Welcome ${user.displayName}!`,
             {
