@@ -1,7 +1,7 @@
 import { Button } from "@mui/material"
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../../config/firebaseConfig";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import toast from "react-hot-toast";
 import addUser from '../../services/addUser';
 
@@ -35,6 +35,10 @@ const GoogleSignInBtn = () => {
                 className: 'bg-red-500 text-white font-sans font-semibold border border-red-600 rounded-md p-2 shadow-lg',
             }
           );
+          signOut(auth)
+          .then(() => {
+              localStorage.removeItem('token');
+          })
           return;
         });
       })

@@ -19,7 +19,8 @@ const useAuthStateChange = () => {
                 setUser(null);
             }
         });
-    }, [user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [auth.currentUser]);
 
     return [user];
 }

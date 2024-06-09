@@ -1,7 +1,7 @@
 import Input from "../global/Input"
 import { useState } from "react"
 import { auth } from "../../config/firebaseConfig";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
 import toast from "react-hot-toast";
 import addUser from '../../services/addUser'
 
@@ -58,6 +58,10 @@ const Signup = ({ setShowLogin }) => {
                     className: 'bg-red-500 text-white font-sans font-semibold border border-red-600 rounded-md p-2 shadow-lg',
                 }
             );
+            signOut(auth)
+            .then(() => {
+                localStorage.removeItem('token');
+            })
             return;
         });
       })
