@@ -3,9 +3,11 @@ import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { useNavigate } from "react-router-dom"
 import { twMerge } from "tailwind-merge";
 import Button from "./Button";
+import useAuthModal from "../../hooks/useAuthModal";
 
 const Header = ({ children, styles }) => {
-
+  
+  const { open } = useAuthModal();
   const navigate = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const handleLogout = () => {
@@ -33,10 +35,10 @@ const Header = ({ children, styles }) => {
             </div>
             <div className="flex justify-between items-center gap-x-4">
                 <>
-                    <Button styles="bg-transparent text-neutral-300 font-medium" onClick={() => {}}>
+                    <Button styles="bg-transparent text-neutral-300 font-medium" onClick={open}>
                         Signup
                     </Button>
-                    <Button styles="bg-white px-6 py-2" onClick={() => {}}>
+                    <Button styles="bg-white px-6 py-2" onClick={open}>
                         Login
                     </Button>
                 </>
