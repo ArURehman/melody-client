@@ -1,8 +1,9 @@
 import { Button } from "@mui/material"
 import { FcGoogle } from "react-icons/fc";
-import { auth, db } from "../../config/firebaseConfig";
+import { auth } from "../../config/firebaseConfig";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import toast from "react-hot-toast";
+import addUser from '../../services/addUser';
 
 const GoogleSignInBtn = () => {
   
@@ -11,23 +12,31 @@ const GoogleSignInBtn = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        localStorage.setItem('token', token);
         const user = result.user;
-        db.collection('users').doc(user.uid).set({
-            username: user.displayName,
-            email: user.email,
-            liked_songs: [],
-            createdAt: new Date(),
-        });
-        toast.success(
+        addUser(user.uid, user.displayName, user.email).then(() => {
+          const token = credential.accessToken;
+          localStorage.setItem('token', token);
+          toast.success(
             `Welcome ${user.displayName}!`,
             {
                 duration: 4000,
                 position: 'bottom-right',
                 className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
             }
-        );
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error(
+            error,
+            {
+                duration: 4000,
+                position: 'bottom-right',
+                className: 'bg-red-500 text-white font-sans font-semibold border border-red-600 rounded-md p-2 shadow-lg',
+            }
+          );
+          return;
+        });
       })
       .catch((error) => {
         toast.error(

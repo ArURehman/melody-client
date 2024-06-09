@@ -14,13 +14,12 @@ const useAuthStateChange = () => {
                     email: user.email,
                     username: user.displayName,
                     photoURL: null || user.photoURL,
-                    liked_songs: user.liked_songs,
                 });
             } else {
                 setUser(null);
             }
         });
-    }, [user, setUser]);
+    }, [user]);
 
     return [user];
 }

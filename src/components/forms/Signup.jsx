@@ -1,8 +1,9 @@
 import Input from "../global/Input"
 import { useState } from "react"
-import { auth, db } from "../../config/firebaseConfig";
+import { auth } from "../../config/firebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import toast from "react-hot-toast";
+import addUser from '../../services/addUser'
 
 const Signup = ({ setShowLogin }) => {
   
@@ -23,7 +24,7 @@ const Signup = ({ setShowLogin }) => {
         );
         return;
     }
-    const loading = toast.loading('Logging in...', {
+    const loading = toast.loading('Signing up...', {
         duration: 0,
         position: 'bottom-right',
         className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
@@ -35,22 +36,30 @@ const Signup = ({ setShowLogin }) => {
             displayName: username,
         });
         const user = userCredential.user;
-        db.collection('users').doc(user.uid).set({
-            username: username,
-            email: email,
-            liked_songs: [],
-            createdAt: new Date(),
+        addUser(user.uid, username, email)
+        .then(() => {
+            const token = user.accessToken;
+            localStorage.setItem('token', token);
+            toast.success(
+                `Welcome ${username}!`,
+                {
+                    duration: 4000,
+                    position: 'bottom-right',
+                    className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
+                }
+            );
+        })
+        .catch((error) => {
+            toast.error(
+                error,
+                {
+                    duration: 4000,
+                    position: 'bottom-right',
+                    className: 'bg-red-500 text-white font-sans font-semibold border border-red-600 rounded-md p-2 shadow-lg',
+                }
+            );
+            return;
         });
-        const token = user.accessToken;
-        localStorage.setItem('token', token);
-        toast.success(
-            `Welcome ${username}!`,
-            {
-                duration: 4000,
-                position: 'bottom-right',
-                className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
-            }
-        );
       })
       .catch((error) => {
         toast.dismiss(loading);
