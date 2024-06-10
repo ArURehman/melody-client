@@ -1,4 +1,4 @@
-import { doc, setDoc, getDoc, collection, query, orderBy, getDocs } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, query, orderBy, getDocs, where } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 import { v4 as uuidv4 } from "uuid";
 
@@ -41,6 +41,20 @@ export const getSongs = async () => {
             songs.push(song.data());
         });
         return songs;
+    } catch (error) {
+        return Promise.reject('An error occured');
+    }
+}
+
+export const getUserSongs = async (user) => {
+    try {
+        const songs = [];
+        const songsRef = collection(db, 'songs');
+        const qry = query(songsRef, where('user', '==', user))
+        const songsSnapshot = await getDocs(qry);
+        songsSnapshot.forEach(song => {
+            songs.push(song.data());
+        });
     } catch (error) {
         return Promise.reject('An error occured');
     }
