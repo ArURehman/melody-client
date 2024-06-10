@@ -2,8 +2,18 @@ import Box from "./Box"
 import routeNames from '../../router/RouteNames'
 import Library from "../sidebar/Library"
 import SidebarItem from '../sidebar/SidebarItem'
+import { useState } from "react"
+import { getUserSongs } from "../../services/addSong"
+import useUserContext from "../../hooks/useUserContext"
 
 const Sidebar = () => {
+  const { user } = useUserContext();
+  const [songs, setSongs] = useState([]);
+
+  getUserSongs(user?.uid).then(res => {
+    setSongs(res);
+  })
+
   return (
     <div className="min-w-[250px] h-full md:flex flex-col gap-y-2 p-2">
         <Box styles="flex flex-col gap-y-4 px-5 py-4">
@@ -12,7 +22,7 @@ const Sidebar = () => {
           ))}
         </Box>
         <Box styles="overflow-y-auto h-full py-4">
-          <Library />
+          <Library songs={songs}/>
         </Box>
     </div>
   )

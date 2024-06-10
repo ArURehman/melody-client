@@ -50,7 +50,7 @@ export const getUserSongs = async (user) => {
     try {
         const songs = [];
         const songsRef = collection(db, 'songs');
-        const qry = query(songsRef, where('user', '==', user))
+        const qry = query(songsRef, where('user', '==', user), orderBy('created_at', 'desc'))
         const songsSnapshot = await getDocs(qry);
         songsSnapshot.forEach(song => {
             songs.push(song.data());
