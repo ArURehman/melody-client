@@ -3,8 +3,9 @@ import { AiOutlinePlusCircle } from "react-icons/ai"
 import useAuthModal from '../../hooks/useAuthModal'
 import useUserContext from "../../hooks/useUserContext";
 import useUploadModal from "../../hooks/useUploadModal";
+import MediaItem from "../global/MediaItem";
 
-const Library = () => {
+const Library = ({ songs }) => {
 
   const { open } = useAuthModal();
   const { user } = useUserContext();
@@ -28,7 +29,9 @@ const Library = () => {
             <AiOutlinePlusCircle size={20} className="text-neutral-400 cursor-pointer hover:text-white transition" onClick={handleClick}/>
         </div>
         <div className="flex flex-col gap-y-2 mt-4 px-3">
-            List of Songs
+            {songs.map((song) => (
+                <MediaItem key={song.id} data={song} handleClick={() => {}}/>
+            ))}
         </div>
     </div>
   )

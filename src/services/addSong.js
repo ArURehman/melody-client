@@ -55,6 +55,22 @@ export const getUserSongs = async (user) => {
         songsSnapshot.forEach(song => {
             songs.push(song.data());
         });
+        return songs;
+    } catch (error) {
+        return Promise.reject('An error occured');
+    }
+}
+
+export const getSongByTitle = async (title) => {
+    try {
+        const songs = [];
+        const songsRef = collection(db, 'songs');
+        const qry = query(songsRef, where('title', 'like', `%${title}%`), orderBy('created_at', 'desc'));
+        const songsSnapshot = await getDocs(qry);
+        songsSnapshot.forEach(song => {
+            songs.push(song.data());
+        });
+        return songs;
     } catch (error) {
         return Promise.reject('An error occured');
     }

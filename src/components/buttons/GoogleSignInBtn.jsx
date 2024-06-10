@@ -26,7 +26,6 @@ const GoogleSignInBtn = () => {
           );
         })
         .catch((error) => {
-          console.log(error);
           toast.error(
             error,
             {

@@ -1,7 +1,6 @@
 import SongItem from "./SongItem"
 
 const PageContent = ({ songs }) => {
-  console.log(songs)
   if (songs.length === 0) {
     return (
       <div className="text-neutral-400 mt-4 text-lg font-semibold">No songs found</div>

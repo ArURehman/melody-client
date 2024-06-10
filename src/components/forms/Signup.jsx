@@ -4,6 +4,7 @@ import { auth } from "../../config/firebaseConfig";
 import { createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
 import toast from "react-hot-toast";
 import addUser from '../../services/addUser'
+import useAuthStateChange from '../../hooks/useAuthStateChange'
 
 const Signup = ({ setShowLogin }) => {
   
@@ -30,43 +31,29 @@ const Signup = ({ setShowLogin }) => {
         className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
     });
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         toast.dismiss(loading);
         updateProfile(auth.currentUser, {
             displayName: username,
         });
         const user = userCredential.user;
-        addUser(user.uid, username, email)
-        .then(() => {
-            const token = user.accessToken;
-            localStorage.setItem('token', token);
-            toast.success(
-                `Welcome ${username}!`,
-                {
-                    duration: 4000,
-                    position: 'bottom-right',
-                    className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
-                }
-            );
-        })
-        .catch((error) => {
-            toast.error(
-                error,
-                {
-                    duration: 4000,
-                    position: 'bottom-right',
-                    className: 'bg-red-500 text-white font-sans font-semibold border border-red-600 rounded-md p-2 shadow-lg',
-                }
-            );
-            signOut(auth)
-            .then(() => {
-                localStorage.removeItem('token');
-            })
-            return;
-        });
+        await addUser(user.uid, username, email)
+        const token = user.accessToken;
+        localStorage.setItem('token', token);
+        toast.success(
+            `Welcome ${username}!`,
+            {
+                duration: 4000,
+                position: 'bottom-right',
+                className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
+            }
+        );
       })
       .catch((error) => {
         toast.dismiss(loading);
+        signOut(auth).then(() => {
+            localStorage.removeItem('token');
+        });
         toast.error(
             error.message.replace('Firebase: ', ''),
             {
@@ -77,6 +64,7 @@ const Signup = ({ setShowLogin }) => {
         );
       });
   }
+  useAuthStateChange();
 
   return (
     <>

@@ -12,7 +12,9 @@ const Sidebar = () => {
 
   getUserSongs(user?.uid).then(res => {
     setSongs(res);
-  })
+  }).catch(err => {
+    console.log(err);
+  });
 
   return (
     <div className="min-w-[250px] h-full md:flex flex-col gap-y-2 p-2">
