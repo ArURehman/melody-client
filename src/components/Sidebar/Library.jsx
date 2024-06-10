@@ -2,16 +2,20 @@ import { TbPlaylist } from "react-icons/tb"
 import { AiOutlinePlusCircle } from "react-icons/ai"
 import useAuthModal from '../../hooks/useAuthModal'
 import useUserContext from "../../hooks/useUserContext";
+import useUploadModal from "../../hooks/useUploadModal";
 
 const Library = () => {
 
   const { open } = useAuthModal();
   const { user } = useUserContext();
+  const uploadModal = useUploadModal();
 
   const handleClick = () => {
     if (!user) {
       open();
     }
+
+    return uploadModal.open();
   }
 
   return (
