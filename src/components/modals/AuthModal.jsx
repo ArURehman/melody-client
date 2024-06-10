@@ -18,8 +18,10 @@ const AuthModal = () => {
 
   useEffect(() => {
     if (user !== null && isOpen) {
-      window.location.reload();
-      close();
+      setTimeout(() => {
+        window.location.reload();
+        close();
+      }, 2000);
     }
   }, [user, isOpen, close])
 

@@ -18,12 +18,15 @@ const Header = ({ children, styles }) => {
 
   const handleLogout = () => {
     signOut(auth).then(() => {
-      window.location.reload();
-      toast.success('Logged out successfully', {
-        duration: 4000,
-        position: 'bottom-right',
-        className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
-      });
+        toast.success('Logged out successfully', {
+            duration: 4000,
+            position: 'bottom-right',
+            className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
+        });
+        setTimeout(() => {
+            localStorage.removeItem('token');
+            window.location.reload();
+        }, 2000);
     }).catch((error) => {
         toast.error(error.message, {
             duration: 4000,
