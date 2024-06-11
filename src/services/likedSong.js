@@ -45,7 +45,6 @@ export const removeLikedSong = async (userID, songID) => {
         });
     }
     catch (error) {
-        console.log(error);
         return Promise.reject('An error occured');
     }
 }
