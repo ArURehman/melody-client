@@ -2,7 +2,7 @@ import LikeButtons from "../buttons/LikeButtons"
 import MediaItem from "./MediaItem"
 
 const LikedContent = ({ songs }) => {
-  if (songs.length === 0) {
+  if (songs?.length === 0) {
     return (
         <div className="flex flex-col gap-y-2 w-full text-neutral-400">
             No liked songs

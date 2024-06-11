@@ -4,44 +4,32 @@ import { auth } from "../../config/firebaseConfig";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import toast from "react-hot-toast";
 import addUser from '../../services/addUser';
+import useAuthStateChange from "../../hooks/useAuthStateChange";
 
 const GoogleSignInBtn = () => {
   
   const handleGoogleSignIn = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const user = result.user;
-        addUser(user.uid, user.displayName, user.email).then(() => {
-          const token = credential.accessToken;
-          localStorage.setItem('token', token);
-          toast.success(
-            `Welcome ${user.displayName}!`,
-            {
-                duration: 4000,
-                position: 'bottom-right',
-                className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
-            }
-          );
-        })
-        .catch((error) => {
-          toast.error(
-            error,
-            {
-                duration: 4000,
-                position: 'bottom-right',
-                className: 'bg-red-500 text-white font-sans font-semibold border border-red-600 rounded-md p-2 shadow-lg',
-            }
-          );
-          signOut(auth)
-          .then(() => {
-              localStorage.removeItem('token');
-          })
-          return;
-        });
+        await addUser(user.uid, user.displayName, user.email)
+        const token = credential.accessToken;
+        localStorage.setItem('token', token);
+        toast.success(
+          `Welcome ${user.displayName}!`,
+          {
+              duration: 4000,
+              position: 'bottom-right',
+              className: 'bg-gray-500 text-white font-sans font-semibold border border-gray-600 rounded-md p-2 shadow-lg',
+          }
+        );
       })
       .catch((error) => {
+        signOut(auth).then(() => {
+            localStorage.removeItem('token');
+        });
         toast.error(
             error.message,
             {
@@ -52,6 +40,7 @@ const GoogleSignInBtn = () => {
         );
       });  
   }
+  useAuthStateChange();
 
   return (
     <Button variant="contained" sx={{

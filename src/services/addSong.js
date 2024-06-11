@@ -27,6 +27,7 @@ export const getSong = async (id) => {
         const song = await getDoc(songRef);
         return song.data();
     } catch (error) {
+        console.log(error)
         return Promise.reject('An error occured');
     }
 }
@@ -76,6 +77,7 @@ export const getSongByTitle = async (title) => {
         });
         return songs;
     } catch (error) {
+        console.log(error)
         return Promise.reject(error);
     }
 }

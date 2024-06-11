@@ -13,6 +13,7 @@ export const checkLikedSongs = async (userID, songID) => {
         return likedSongsSnapshot;
     }
     catch (error) {
+        console.log(error);
         return Promise.reject('An error occured');
     }
 }
@@ -29,6 +30,7 @@ export const addLikedSong = async (userID, songID) => {
         });
     }
     catch (error) {
+        console.log(error)  
         return Promise.reject('An error occured');
     }
 }
@@ -45,6 +47,7 @@ export const removeLikedSong = async (userID, songID) => {
         });
     }
     catch (error) {
+        console.log(error)
         return Promise.reject('An error occured');
     }
 }
@@ -58,12 +61,13 @@ export const getLikedSongs = async (userID) => {
         likedSongsSnapshot.forEach((doc) => {
             doc.data().liked_songs.forEach(async (songID) => {
                 const song = await getSong(songID);
-                likedSongs.push(song);
+                likedSongs = likedSongs.concat(song)
             });
         });
         return likedSongs;
     }
     catch (error) {
+        console.log(error);
         return Promise.reject('An error occured');
     }
 }

@@ -7,6 +7,7 @@ import { getUserSongs } from "../../services/addSong"
 import useUserContext from "../../hooks/useUserContext"
 
 const Sidebar = () => {
+  
   const { user } = useUserContext();
   const [songs, setSongs] = useState([]);
 
@@ -19,8 +20,8 @@ const Sidebar = () => {
   return (
     <div className="min-w-[250px] h-full md:flex flex-col gap-y-2 p-2">
         <Box styles="flex flex-col gap-y-4 px-5 py-4">
-          {Object.keys(routeNames).map((route) => (
-            <SidebarItem key={route.name} Icon={routeNames[route].icon} {...routeNames[route]}/>
+          {Object.keys(routeNames).map((route, index) => (
+            <SidebarItem key={index} Icon={routeNames[route].icon} {...routeNames[route]}/>
           ))}
         </Box>
         <Box styles="overflow-y-auto h-full py-4">

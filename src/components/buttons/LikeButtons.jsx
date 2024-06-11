@@ -1,7 +1,7 @@
 import useUserContext from '../../hooks/useUserContext';
 import useAuthModal from '../../hooks/useAuthModal';
 import { useEffect, useState } from "react";
-import { checkLikedSongs, addLikedSong, removeLikedSong } from "../../services/likedSong";
+import { checkLikedSongs, addLikedSong, removeLikedSong, getLikedSongs } from "../../services/likedSong";
 import toast from "react-hot-toast";
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 

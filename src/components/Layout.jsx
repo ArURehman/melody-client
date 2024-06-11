@@ -2,10 +2,11 @@ import { Outlet } from "react-router-dom"
 import Sidebar from '../components/global/Sidebar'
 import Header from "./global/Header"
 import Box from './global/Box'
+import { twMerge } from "tailwind-merge"
 
 const Layout = () => {
   return (
-    <div className="flex flex-row h-screen overflow-auto bg-neutral-950 text-white">
+    <div className={twMerge("flex flex-row h-screen overflow-auto bg-neutral-950 text-white")}>
         <div className="hidden md:basis-1/6 md:block">
             <Sidebar />
         </div>

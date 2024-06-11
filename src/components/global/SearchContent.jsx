@@ -1,7 +1,11 @@
+import useOnPlay from '../../hooks/useOnPlay'
 import LikeButton from '../buttons/LikeButtons'
 import MediaItem from './MediaItem'
 
 const SearchContent = ({ songs }) => {
+
+  const onPlay = useOnPlay(songs);
+
   if (songs.length === 0) {
     return (
       <div className="flex flex-col gap-y-2 w-full py-3 text-neutral-400">
@@ -16,7 +20,7 @@ const SearchContent = ({ songs }) => {
                     <div className="flex-1">
                         <MediaItem 
                             data={song}
-                            handleClick={() => {}}
+                            handleClick={() => onPlay(song)}
                         />
                     </div>
                     <LikeButton songID={song.id} />
