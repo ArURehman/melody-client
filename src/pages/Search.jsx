@@ -11,7 +11,6 @@ const Search = () => {
   const [songs, setSongs] = useState([]);
 
   getSongByTitle(searchParams.get('title')).then((data) => {
-    console.log(data);
     setSongs(data);
   });
 

@@ -33,7 +33,7 @@ const LikeButtons = ({ songID }) => {
 
   const Icon = isLiked ? AiFillHeart : AiOutlineHeart;
 
-  const handleLike = async () => {
+  const handleLike = () => {
     if (!user || !user?.uid) {
         authModal.open();
         return;
@@ -41,13 +41,22 @@ const LikeButtons = ({ songID }) => {
     if (isLiked) {
         removeLikedSong(user.uid, songID).then(() => {
             setIsLiked(false)
+            toast.success('Song removed from liked songs',{
+                duration: 4000,
+                position: 'bottom-right',
+                className: 'bg-green-500 text-white px-6 py-4 border-0 rounded relative mb-4'
+            });
         });
     } else {
         addLikedSong(user.uid, songID).then(() => {
             setIsLiked(true)
+            toast.success('Song added to liked songs',{
+                duration: 4000,
+                position: 'bottom-right',
+                className: 'bg-green-500 text-white px-6 py-4 border-0 rounded relative mb-4'
+            });
         });
     }
-    window.location.reload();
   }
 
   return (
